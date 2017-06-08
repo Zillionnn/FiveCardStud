@@ -28,3 +28,21 @@ npm test
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+
+#five card stud
+
+1)初始化
+界面
+
+2）进入游戏->
+初始化桌面->玩家  和 电脑-> 发牌->筹码->判断胜负
+
+#发牌
+
+#筹码运算
+
+#胜负运算
+
+
