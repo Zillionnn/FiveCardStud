@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="my-card">
+
+</p>
+<button onclick="getAll()">重置所有牌</button>
+<button onclick="getOne()">    随机一张牌</button>
+
+</body>
+</html>
+<script src="Card.js"></script>
+<script>
+    var cardArray=[];
+    var lastCardPosition;
+    /*初始化所有牌*/
+    function getAll() {
+        //所有牌的一个数组
+         cardArray=Card.initAll();
+        console.log(cardArray);
+    }
+
+/*取一张牌*/
+    function getOne() {
+        var lastCard=cardArray.shift();
+        if(cardArray.length==0){
+            alert("there are no cards,PLEASE get new All cards");
+
+            document.getElementById("my-card").innerHTML="";
+
+        }
+
+        var node=document.createElement("span");
+        //得到路片名称；
+        var cardpic=Card.getCardPic(lastCard);
+        node.innerHTML="<img src='cardPic/"+cardpic+".jpg'>";
+
+
+        document.getElementById("my-card").appendChild(node);
+        console.log(lastCard);
+        return lastCard;
+    }
+</script>
