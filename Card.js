@@ -1,6 +1,6 @@
 var Card={
-  cardSet:["Spade","Heart","Diamond","Club"],
-  number:["A","2","3","4","5","6","7","8","9","10","J","Q","K"],
+  cardset:["Spade","Heart","Diamond","Club"],
+  number:['A',2,3,4,5,6,7,8,9,10,'J','Q','K'],
 
   cardArray:[],
 
@@ -12,7 +12,7 @@ var Card={
     for(var i=0;i<4;i++){
       for(var j=0;j<13;j++){
         var signCard={
-          cardset:Card.cardSet[i],
+          cardset:Card.cardset[i],
           cardnum:Card.number[j]
         };
         cacheArray.push(signCard);
