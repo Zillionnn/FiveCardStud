@@ -5,44 +5,70 @@
     <title>Title</title>
 </head>
 <body>
-<p id="my-card">
+<h3>Jack</h3>
+<p id="player1"></p>
 
-</p>
+<br/>
+<h4>Merry</h4>
+<p id="player2"></p>
 <button onclick="getAll()">重置所有牌</button>
-<button onclick="getOne()">    随机一张牌</button>
+<button onclick="getOne()"> 发牌</button>
+<p>WINNER:<span id="winner"></span></p>
 
 </body>
 </html>
 <script src="Card.js"></script>
+<script src="Player.js"></script>
+<script src="rule.js"></script>
 <script>
-    var cardArray=[];
+    var cardArray = [];
     var lastCardPosition;
+    var player1 = new Player();
+    player1.name = "Jack";
+    var player2 = new Player();
+    player2.name = "Merry";
+
+
     /*初始化所有牌*/
     function getAll() {
-        document.getElementById("my-card").innerHTML="";
+        document.getElementById("player1").innerHTML = "";
+        document.getElementById("player2").innerHTML = "";
         //所有牌的一个数组
-         cardArray=Card.initAll();
-        console.log(cardArray);
+        cardArray = Card.initAll();
     }
 
-/*取一张牌*/
+    /*给2个人发牌*/
     function getOne() {
-        var lastCard=cardArray.shift();
-        if(cardArray.length==0){
-            alert("there are no cards,PLEASE get new All cards");
+        var lastCard = cardArray.shift();
 
-            document.getElementById("my-card").innerHTML="";
 
+        var node = document.createElement("span");
+        //得到路片名称；
+        var cardpic = Card.getCardPic(lastCard);
+        node.innerHTML = "<img src='cardPic/" + cardpic + ".jpg'>";
+        document.getElementById("player1").appendChild(node);
+        player1.setCards(lastCard);
+
+
+
+        lastCard = cardArray.shift();
+        node = document.createElement("span");
+        //得到路片名称；
+        cardpic = Card.getCardPic(lastCard);
+        node.innerHTML = "<img src='cardPic/" + cardpic + ".jpg'>";
+        document.getElementById("player2").appendChild(node);
+        player2.setCards(lastCard);
+
+
+        if (player1.cards.length == 5) {
+            alert(comparePlayerValue(player1, player2));
+            document.getElementById("winner").innerHTML=   comparePlayerValue(player1, player2);
+            player1.initCards();
+            player2.initCards();
+
+            return;
         }
 
-        var node=document.createElement("span");
-        //得到路片名称；
-        var cardpic=Card.getCardPic(lastCard);
-        node.innerHTML="<img src='cardPic/"+cardpic+".jpg'>";
 
-
-        document.getElementById("my-card").appendChild(node);
-        console.log(lastCard);
-        return lastCard;
     }
 </script>

@@ -19,6 +19,7 @@ var Card={
       }
     }
 
+
     //随机取牌，重新推入数组
     for(var i=0;i<52;i++){
       var cardPosition=parseInt(Math.random()*cacheArray.length);
@@ -31,7 +32,6 @@ var Card={
    // console.log(this.cardArray);
     return this.cardArray;
   },
-
 
   //随机一张牌
   getOneCard:function (cardArray) {
@@ -55,4 +55,3 @@ var Card={
     return cardPicName;
   }
 };
-
