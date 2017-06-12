@@ -10,6 +10,7 @@ function Player() {
     //手上的筹码,初始化设置合适的值
     this.chips = 0;
 
+    this.cardsValue;
 
     this.setCards = function (card) {
         this.cards.push(card);
@@ -17,7 +18,7 @@ function Player() {
 
     this.getCards = function () {
         return this.cards;
-    }
+    };
 
     this.setChips = function (chips) {
         this.chips+=chips;

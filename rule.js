@@ -1,3 +1,32 @@
+
+function Player() {
+    //手上的牌
+    this.cards = [];
+
+    //手上的筹码,初始化设置合适的值
+    this.chips = 0;
+
+    this.cardsValue;
+
+    this.setCards = function (card) {
+        this.cards.push(card);
+    };
+
+    this.getCards = function () {
+        return this.cards;
+    };
+
+    this.setChips = function (chips) {
+        this.chips+=chips;
+    };
+
+    this.getChips = function () {
+        return this.chips;
+    };
+
+}
+
+
 //先对持有的牌 排序
 function cardsSort(playerCardsArray) {
     stringToNum(playerCardsArray);
@@ -60,7 +89,7 @@ function bubbleSort(array) {
 
 
 //检查牌 所属类型
-function checkValue(array) {
+function checkCardsType(array,player) {
     cardsSort(array);
     //花色
     var cardSameSet = 1;
@@ -84,48 +113,98 @@ function checkValue(array) {
                 x = array[i].cardnum;
             }
 
-
+            //相同数字>2 ； 判断满堂红，三条，两对
             if (cardSameNum > 2) {
+                if (cardSameNum == 3) {
+                    if(array[0].cardnum==array[1].cardnum==array[2].cardnum  || array[2].cardnum==array[2].cardnum==array[3].cardnum==array[4].cardnum){
+                        console.log("满堂红");
+                        player.cardsValue=90;
+                        numToString(array);
+                        return;
+                    }
+
+                }
+
                 if (x != array[i].cardnum) {
                     x = array[i].cardnum;
                     cardSameNum -= 1;
                     console.log("两对");
+                    player.cardsValue=9;
                     return;
                 }
+
+                console.log("三条");
+                player.cardsValue=10;
+                numToString(array);
+                return;
             }
 
 
         }
 
     }
+    //判断为同花
     if (cardSameSet == 5) {
+        //判断为同花+顺子
+        if (cardStraight == 5) {
+            if(array[4].cardnum==14){
+                console.log("同花大顺");
+                player.cardsValue=999;
+                numToString(array);
+                return;
+            }
+            console.log("同花顺");
+            player.cardsValue=900;
+            numToString(array);
+            return;
+        }
         console.log("同花");
+        player.cardsValue=80;
+        numToString(array);
+        return;
     }
-
-    if (cardStraight == 5) {
-        console.log("顺子");
-    }
-
+    //判断为四条
     if (cardSameNum == 4) {
         console.log("四条");
-    }
-    if (cardSameNum == 3) {
-        console.log("三条");
-    }
-    if (cardSameNum == 2) {
-        console.log("一对");
+        player.cardsValue=100;
+        numToString(array);
+        return;
     }
 
-numToString(array);
+//判断为顺子
+    if (cardStraight == 5) {
+        console.log("顺子");
+        player.cardsValue=70;
+        numToString(array);
+        return;
+    }
+
+//判断为三条
+    if (cardSameNum == 3) {
+        console.log("三条");
+        player.cardsValue=7;
+        numToString(array);
+        return;
+    }
+    //判断为一对
+    if (cardSameNum == 2) {
+        console.log("一对");
+        player.cardsValue=5;
+        numToString(array);
+        return;
+    }
+
 }
 
 
-var array = [{cardset: "Heart", cardnum: 10},
+var array = [{cardset: "Heart", cardnum: 9},
+    {cardset: "s", cardnum: 10},
+    {cardset: "Heart", cardnum: 7},
     {cardset: "Heart", cardnum: 'K'},
-    {cardset: "Heart", cardnum: 10},
-    {cardset: "Heart", cardnum: 'J'},
-    {cardset: "Heart", cardnum: 'Q'}];
+    {cardset: "Heart", cardnum: 'K'}];
 
-checkValue(array);
+var player1=new Player();
+checkCardsType(array,player1);
+console.log(player1.cardsValue);
 console.log(array);
 
