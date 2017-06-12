@@ -153,8 +153,6 @@ function Player() {
                 return;
             }
             console.log("同花");
-            alert("同花");
-            console.log(array);
             player.cardsValue = 80;
             numToString(array);
             return;
