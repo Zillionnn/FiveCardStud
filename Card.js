@@ -51,7 +51,7 @@ var Card={
   //和图片匹配
   getCardPic:function (card) {
     var cardPicName=card.cardset+    card.cardnum;
-    console.log(cardPicName);
+  //  console.log(cardPicName);
     return cardPicName;
   }
 };

@@ -5,15 +5,16 @@
     <title>Title</title>
 </head>
 <body>
+<button onclick="getAll()">重置所有牌</button>
+<button onclick="getOne()"> 发牌</button>
+<p>WINNER:<span id="winner"></span></p>
+<br/>
 <h3>Jack</h3>
 <p id="player1"></p>
 
 <br/>
 <h4>Merry</h4>
 <p id="player2"></p>
-<button onclick="getAll()">重置所有牌</button>
-<button onclick="getOne()"> 发牌</button>
-<p>WINNER:<span id="winner"></span></p>
 
 </body>
 </html>
@@ -27,6 +28,8 @@
     player1.name = "Jack";
     var player2 = new Player();
     player2.name = "Merry";
+var player1winnerSum=0;
+    var player2winnerSum=0;
 
 
     /*初始化所有牌*/
@@ -35,6 +38,9 @@
         document.getElementById("player2").innerHTML = "";
         //所有牌的一个数组
         cardArray = Card.initAll();
+        player1.initCards();
+        player2.initCards();
+
     }
 
     /*给2个人发牌*/
@@ -61,14 +67,22 @@
 
 
         if (player1.cards.length == 5) {
-            alert(comparePlayerValue(player1, player2));
+        //    alert(comparePlayerValue(player1, player2));
             document.getElementById("winner").innerHTML=   comparePlayerValue(player1, player2);
+            if(comparePlayerValue(player1, player2)=="Jack"){
+                player1winnerSum++;
+            }else{
+                player2winnerSum++;
+            }
+
             player1.initCards();
             player2.initCards();
-
             return;
         }
 
 
     }
+
+
+
 </script>
