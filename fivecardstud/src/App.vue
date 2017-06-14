@@ -9,24 +9,33 @@
 
 
     <br/>
-    <h3>Jack</h3>
-    <p  id="player1">
+    <p>
+
+    </p>
+    <div class="playerDesk">
+      <h3>{{player1.name}}</h3>
+      <p id="player1">
       <span v-for="( card ,i) in this.player1.cards">
         <div v-bind:class="{hide: i==0}" style="float: left"></div>
-        <img v-bind:src="card.cardSrc" v-bind:class="{small:i==0}">
+        <!--<img v-bind:src="card.cardSrc" v-bind:class="{small:i==0}">-->
+        <img v-bind:src="card.cardSrc" v-if="i>0 &&i<5 &&x==false ">
+        <img v-bind:src="card.cardSrc" v-if="x ">
       </span>
-    </p>
+      </p>
+    </div>
+
 
     <br/>
-    <p></p>
-    <br/>
-    <h4>Merry</h4>
-    <p id="player2">
-      <span v-for="( card , i) in this.player2.cards" >
-        <img v-bind:src="card.cardSrc" >
+
+    <div class="playerDesk">
+      <h4>{{player2.name}}</h4>
+      <p id="player2">
+      <span v-for="( card , i) in this.player2.cards">
+        <img v-bind:src="card.cardSrc">
       </span>
 
-    </p>
+      </p>
+    </div>
 
 
   </div>
@@ -46,8 +55,7 @@
         player2: {},
         Card: {},
         winnerName: '',
-
-
+        x: false
       }
     },
 
@@ -72,6 +80,7 @@
       /*初始化所有牌*/
       getAll: function () {
         document.getElementById('sendCard').removeAttribute("disabled");
+        this.x = false;
         //所有牌的一个数组
         this.cardArray = this.Card.initAll();
         this.player1.initCards();
@@ -87,17 +96,17 @@
         this.player2.setCards(lastCard);
 
         if (this.player1.cards.length == 5) {
-        document.getElementById('sendCard').setAttribute("disabled",true);
+          document.getElementById('sendCard').setAttribute("disabled", true);
         }
 
       },
 
       //比较牌的大小
-      checkValue:function () {
-        document.getElementById("player1").firstChild.firstChild.removeAttribute('class','hide');
-        document.getElementById("player1").firstChild.lastChild.removeAttribute('class','small');
+      checkValue: function () {
+        document.getElementById("player1").firstChild.firstChild.removeAttribute('class', 'hide');
+        this.x = true;
         this.winnerName = Rule(this.player1, this.player2);
-        console.log(Rule(this.player1, this.player2));
+        console.log(this.winnerName);
 
       }
 
@@ -118,15 +127,21 @@
     margin-top: 60px;
   }
 
-  .hide{
-  background-color: black;
+  .hide {
+    background-color: black;
     z-index: 99;
-    width:94px;
-    height:137px;
+    width: 94px;
+    height: 137px;
     float: left;
   }
-  .small{
+
+  .small {
     width: 0;
     height: 0;
+  }
+  .playerDesk{
+    width: 100%;
+    height: 210px;
+margin-top: 3em;
   }
 </style>
