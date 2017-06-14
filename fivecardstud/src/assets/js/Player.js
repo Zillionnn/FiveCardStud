@@ -134,7 +134,7 @@ export function Player() {
       //判断相同数字
       if (array[i].cardnum == array[i - 1].cardnum) {
         cardSameNum += 1;
-
+        x=array[i].cardnum;
       }
 
     }
@@ -207,7 +207,7 @@ export function Player() {
 
         //判断为两对
         console.log("两对");
-        player.cardsValue = 200;
+        player.cardsValue = 200+array[1].cardnum;
         numToString(array);
         return;
       }
@@ -218,7 +218,7 @@ export function Player() {
     //判断为一对
     if (cardSameNum == 2) {
       console.log("一对");
-      player.cardsValue = 100;
+      player.cardsValue = 100+x;
       numToString(array);
       return;
     }

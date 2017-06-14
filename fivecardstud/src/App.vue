@@ -3,19 +3,28 @@
     <router-view></router-view>
 
     <button v-on:click="getAll()">重置所有牌</button>
-    <button v-on:click="getOne()"> 发牌</button>
+    <button v-on:click="getOne()" id="sendCard"> 发牌</button>
+    <button v-on:click="checkValue()">check</button>
     <p>WINNER:<span id="winner">{{winnerName}}</span></p>
-    <img src="./assets/cardPic/Diamond2.jpg">
+
+
     <br/>
     <h3>Jack</h3>
-    <p id="player1">
-      <span v-for=" i in this.player1.cards"><img v-bind:src="i.cardSrc"> </span>
+    <p  id="player1">
+      <span v-for="( card ,i) in this.player1.cards">
+        <div v-bind:class="{hide: i==0}" style="float: left"></div>
+        <img v-bind:src="card.cardSrc" v-bind:class="{small:i==0}">
+      </span>
     </p>
 
     <br/>
+    <p></p>
+    <br/>
     <h4>Merry</h4>
     <p id="player2">
-      <span v-for=" i in this.player2.cards"><img v-bind:src="i.cardSrc"> </span>
+      <span v-for="( card , i) in this.player2.cards" >
+        <img v-bind:src="card.cardSrc" >
+      </span>
 
     </p>
 
@@ -62,6 +71,7 @@
 
       /*初始化所有牌*/
       getAll: function () {
+        document.getElementById('sendCard').removeAttribute("disabled");
         //所有牌的一个数组
         this.cardArray = this.Card.initAll();
         this.player1.initCards();
@@ -77,14 +87,18 @@
         this.player2.setCards(lastCard);
 
         if (this.player1.cards.length == 5) {
-          //    alert(comparePlayerValue(player1, player2));
-          this.winnerName = Rule(this.player1, this.player2);
-          console.log(Rule(this.player1, this.player2));
+        document.getElementById('sendCard').setAttribute("disabled",true);
         }
 
-        if (this.player1.cards.length > 5) {
-          this.getAll();
-        }
+      },
+
+      //比较牌的大小
+      checkValue:function () {
+        document.getElementById("player1").firstChild.firstChild.removeAttribute('class','hide');
+        document.getElementById("player1").firstChild.lastChild.removeAttribute('class','small');
+        this.winnerName = Rule(this.player1, this.player2);
+        console.log(Rule(this.player1, this.player2));
+
       }
 
 
@@ -102,5 +116,17 @@
 
     color: #2c3e50;
     margin-top: 60px;
+  }
+
+  .hide{
+  background-color: black;
+    z-index: 99;
+    width:94px;
+    height:137px;
+    float: left;
+  }
+  .small{
+    width: 0;
+    height: 0;
   }
 </style>
