@@ -195,9 +195,9 @@ function Player() {
             if (cardSameNum == 3) {
                 if ((array[0].cardnum == array[1].cardnum)
                     && (array[0].cardnum == array[2].cardnum)
-                    || (array[0].cardnum == array[4].cardnum)
+                    || (array[1].cardnum == array[2].cardnum)
                     && (array[1].cardnum == array[3].cardnum)
-                    || (array[0].cardnum == array[1].cardnum)
+                    || (array[2].cardnum == array[3].cardnum)
                     && (array[2].cardnum == array[4].cardnum)) {
                     console.log("三条");
                     player.cardsValue = 400+ array[2].cardnum;

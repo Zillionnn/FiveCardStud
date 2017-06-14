@@ -110,8 +110,6 @@
 
         var lastCard2 = this.cardArray.shift();
         this.player2.setCards(lastCard2);
-        console.log(lastCard1.cardnum);
-        console.log(lastCard2.cardnum);
         this.cardsetStringToNum(lastCard2);
         this.stringToNum(lastCard2);
 
