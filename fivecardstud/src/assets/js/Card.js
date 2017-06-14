@@ -56,6 +56,7 @@ export  function Card() {
    console.log(cardPicName);
 
     return cardPicName;
-  }
+  };
+  
 }
 

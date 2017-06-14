@@ -14,7 +14,11 @@
     </p>
     <div class="playerDesk">
       <h3>{{player1.name}}</h3>
+      <button v-on:click="follow()" id="player1Bet" v-show="betStatus1">Bet</button>
+      <button v-on:click="follow()" id="player1Follow" v-show="followStatus1">follow</button>
+      <button v-on:click="drop()">drop</button>
       <p id="player1">
+
       <span v-for="( card ,i) in this.player1.cards">
         <div v-bind:class="{hide: i==0}" style="float: left"></div>
         <!--<img v-bind:src="card.cardSrc" v-bind:class="{small:i==0}">-->
@@ -29,7 +33,11 @@
 
     <div class="playerDesk">
       <h4>{{player2.name}}</h4>
+      <button v-on:click="follow()" id="player2Bet"  v-show="betStatus2">Bet</button>
+      <button v-on:click="follow()" id="player2Follow" v-show="followStatus2">follow</button>
+      <button v-on:click="drop()">drop</button>
       <p id="player2">
+
       <span v-for="( card , i) in this.player2.cards">
         <img v-bind:src="card.cardSrc">
       </span>
@@ -55,7 +63,12 @@
         player2: {},
         Card: {},
         winnerName: '',
-        x: false
+        x: false,
+
+        betStatus1:true,
+        followStatus1:true,
+        betStatus2:true,
+        followStatus2:true
       }
     },
 
@@ -89,11 +102,52 @@
 
       /*给2个人发牌*/
       getOne: function () {
-        var lastCard = this.cardArray.shift();
-        this.player1.setCards(lastCard);
+        var lastCard1 = this.cardArray.shift();
+        this.player1.setCards(lastCard1);
+        this.cardsetStringToNum(lastCard1);
+        this.stringToNum(lastCard1);
 
-        lastCard = this.cardArray.shift();
-        this.player2.setCards(lastCard);
+
+        var lastCard2 = this.cardArray.shift();
+        this.player2.setCards(lastCard2);
+        console.log(lastCard1.cardnum);
+        console.log(lastCard2.cardnum);
+        this.cardsetStringToNum(lastCard2);
+        this.stringToNum(lastCard2);
+
+        //判断牌面，决定谁能下注
+        if (this.player1.cards.length >= 2) {
+          if (lastCard1.cardnum > lastCard2.cardnum) {
+            this.betStatus1=true;
+              this.followStatus1=false;
+            this.betStatus2=false;
+            this.followStatus2=true;
+
+          } else if (lastCard2.cardnum > lastCard1.cardnum) {
+
+            this.betStatus2=true;
+            this.followStatus2=false;
+            this.betStatus1=false;
+            this.followStatus1=true;
+
+          } else {
+            if (lastCard1.cardset > lastCard2.cardset) {
+              this.betStatus1=true;
+              this.followStatus1=false;
+              this.betStatus2=false;
+              this.followStatus2=true;
+
+            } else {
+
+              this.betStatus2=true;
+              this.followStatus2=false;
+              this.betStatus1=false;
+              this.followStatus1=true;
+
+            }
+          }
+        }
+
 
         if (this.player1.cards.length == 5) {
           document.getElementById('sendCard').setAttribute("disabled", true);
@@ -107,6 +161,40 @@
         this.x = true;
         this.winnerName = Rule(this.player1, this.player2);
         console.log(this.winnerName);
+
+      },
+
+      cardsetStringToNum: function (card) {
+
+        if (card.cardset == "Spade") {
+          card.cardset = 10;
+        }
+        if (card.cardset == "Heart") {
+          card.cardset = 9;
+        }
+        if (card.cardset == "Club") {
+          card.cardset = 8;
+        }
+        if (card.cardset == "Diamond") {
+          card.cardset = 7;
+        }
+      },
+
+
+      stringToNum: function (card) {
+
+        if (card.cardnum == "J") {
+          card.cardnum = 11;
+        }
+        if (card.cardnum == "Q") {
+          card.cardnum = 12;
+        }
+        if (card.cardnum == "K") {
+          card.cardnum = 13;
+        }
+        if (card.cardnum == "A") {
+          card.cardnum = 14;
+        }
 
       }
 
@@ -139,9 +227,10 @@
     width: 0;
     height: 0;
   }
-  .playerDesk{
+
+  .playerDesk {
     width: 100%;
     height: 210px;
-margin-top: 3em;
+    margin-top: 3em;
   }
 </style>
