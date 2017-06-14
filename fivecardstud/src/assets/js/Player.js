@@ -138,11 +138,22 @@ export function Player() {
       }
 
     }
+    //A 5 4 3 2 为顺子
+    if(array[0].cardnum==14
+      &&array[1].cardnum==5
+      &&array[2].cardnum==4
+      &&array[3].cardnum==3
+      &&array[4].cardnum==2){
+      console.log("顺子");
+      player.cardsValue = 500;
+      numToString(array);
+      return;
+    }
     //判断为同花
     if (cardSameSet == 5) {
       //判断为同花+顺子
       if (cardStraight == 5) {
-        if (array[4].cardnum == 14) {
+        if (array[0].cardnum == 14) {
           console.log("同花大顺");
           player.cardsValue = 999;
           numToString(array);

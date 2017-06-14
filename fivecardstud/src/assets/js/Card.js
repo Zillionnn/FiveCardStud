@@ -30,7 +30,7 @@ export  function Card() {
     //倒叙排列
     this.cardArray=this.cardArray.reverse();
 
-    console.log(this.cardArray);
+   // console.log(this.cardArray);
     return this.cardArray;
   };
 
@@ -57,6 +57,6 @@ export  function Card() {
 
     return cardPicName;
   };
-  
+
 }
 
