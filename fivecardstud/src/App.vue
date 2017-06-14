@@ -92,8 +92,12 @@
       getAll: function () {
         document.getElementById('sendCard').removeAttribute("disabled");
         this.x = false;
+
+        this.followStatus1=true;
+          this.followStatus2=true;
         //所有牌的一个数组
         this.cardArray = this.Card.initAll();
+        this.winnerName="";
         this.player1.initCards();
         this.player2.initCards();
       },
