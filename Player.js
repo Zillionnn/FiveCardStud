@@ -134,6 +134,7 @@ function Player() {
             //判断相同数字
             if (array[i].cardnum == array[i - 1].cardnum) {
                 cardSameNum += 1;
+
             }
 
         }
@@ -153,7 +154,7 @@ function Player() {
                 return;
             }
             console.log("同花");
-            player.cardsValue = 80;
+            player.cardsValue =600;
             numToString(array);
             return;
         }
@@ -161,7 +162,7 @@ function Player() {
 //判断为顺子
         if (cardStraight == 5) {
             console.log("顺子");
-            player.cardsValue = 70;
+            player.cardsValue = 500;
             numToString(array);
             return;
         }
@@ -179,13 +180,13 @@ function Player() {
                     && (array[1].cardnum == array[3].cardnum)
                     && (array[1].cardnum == array[4].cardnum)) {
                     console.log("四条");
-                    player.cardsValue = 100;
+                    player.cardsValue = 800+array[1].cardnum;
                     numToString(array);
                     return;
                 }
                 //判断为满堂红
                 console.log("满堂红");
-                player.cardsValue = 90;
+                player.cardsValue = 700+array[2].cardnum;
                 numToString(array);
                 return;
             }
@@ -194,19 +195,19 @@ function Player() {
             if (cardSameNum == 3) {
                 if ((array[0].cardnum == array[1].cardnum)
                     && (array[0].cardnum == array[2].cardnum)
-                    || (array[1].cardnum == array[2].cardnum)
+                    || (array[0].cardnum == array[4].cardnum)
                     && (array[1].cardnum == array[3].cardnum)
-                    || (array[2].cardnum == array[3].cardnum)
+                    || (array[0].cardnum == array[1].cardnum)
                     && (array[2].cardnum == array[4].cardnum)) {
                     console.log("三条");
-                    player.cardsValue = 60;
+                    player.cardsValue = 400+ array[2].cardnum;
                     numToString(array);
                     return;
                 }
 
                 //判断为两对
                 console.log("两对");
-                player.cardsValue = 50;
+                player.cardsValue = 200;
                 numToString(array);
                 return;
             }
@@ -217,7 +218,7 @@ function Player() {
         //判断为一对
         if (cardSameNum == 2) {
             console.log("一对");
-            player.cardsValue = 10;
+            player.cardsValue = 100;
             numToString(array);
             return;
         }
@@ -228,25 +229,26 @@ function Player() {
 
 }
 
-/*
 var player1 = new Player();
 player1.name = "Jack";
-player1.cards = [{cardset: "Heart", cardnum: 7},
-    {cardset: "Heart", cardnum: 10},
+player1.cards = [{cardset: "Heart", cardnum:9},
+    {cardset: "Heart", cardnum: 9},
     {cardset: "d", cardnum: 9},
-    {cardset: "Spade", cardnum: 'J'},
-    {cardset: "Spade", cardnum: 'A'}];
+    {cardset: "Spade", cardnum: 9},
+    {cardset: "Spade", cardnum: 3}];
 
 var player2 = new Player();
 player2.name = "Merry";
 player2.cards = [{cardset: "Club", cardnum: 7},
-    {cardset: "Heart", cardnum: 10},
-    {cardset: "d", cardnum: 9},
-    {cardset: "Club", cardnum: 'J'},
+    {cardset: "Heart", cardnum: 7},
+    {cardset: "d", cardnum: 7},
+    {cardset: "Club", cardnum: 7},
     {cardset: "Club", cardnum: 'A'}];
-*/
 
 
-//player2.checkCardsType(player2.cards,player2);
 
+player1.checkCardsType(player1.cards,player1);
+console.log(player1.cardsValue);
 
+player2.checkCardsType(player2.cards,player2);
+console.log(player2.cardsValue);
