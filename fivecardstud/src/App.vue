@@ -160,20 +160,32 @@
           if (lastCard1.cardnum > lastCard2.cardnum) {
             this.betStatus1=true;
             this.betStatus2=false;
-
+            this.followStatus1=false;
+            this.followStatus2=false;
+            this.doStatus1=false;
+            this.doStatus2=false;
           } else if (lastCard2.cardnum > lastCard1.cardnum) {
             this.betStatus1=false;
             this.betStatus2=true;
-
+            this.followStatus1=false;
+            this.followStatus2=false;
+            this.doStatus1=false;
+            this.doStatus2=false;
           } else {
             if (lastCard1.cardset > lastCard2.cardset) {
               this.betStatus1=true;
               this.betStatus2=false;
-
+              this.followStatus1=false;
+              this.followStatus2=false;
+              this.doStatus1=false;
+              this.doStatus2=false;
             } else {
               this.betStatus1=false;
               this.betStatus2=true;
-
+              this.followStatus1=false;
+              this.followStatus2=false;
+              this.doStatus1=false;
+              this.doStatus2=false;
             }
           }
         }
@@ -193,6 +205,12 @@
 
         console.log(this.winner);
         this.winner.chips += this.totalBet;
+        this.doStatus1=false;
+        this.doStatus2=false;
+          this.betStatus1=false;
+        this.betStatus2=false;
+          this.followStatus1=false;
+          this.followStatus2=false;
 
       },
 
@@ -233,6 +251,8 @@
       player1Bet: function (chips) {
         if (chips > this.player2CurrentBet &&(this.player2CurrentBet!=0) ) {
           this.player1CurrentBet=chips;
+          this.player1.chips -= chips;
+          this.totalBet += chips;
 
           this.betStatus1=false;
           this.betStatus2=false;
@@ -240,6 +260,7 @@
           this.followStatus1 = false;
 
           this.doStatus2=false;
+          this.doStatus1=true;
           return ;
         }
         if (chips == 'max') {
@@ -260,7 +281,9 @@
 
       player2Bet: function (chips) {
         if (chips > this.player1CurrentBet &&( this.player1CurrentBet!=0)) {
-          this.player2CurrentBet=chips;
+          this.player2.chips -= chips;
+          this.player2CurrentBet = chips;
+          this.totalBet += chips;
 
           this.betStatus2=false;
           this.betStatus1=false;
@@ -268,6 +291,7 @@
           this.followStatus2 = false;
 
          this.doStatus1=false;
+          this.doStatus2=true;
           return ;
         }else       if (chips == 'max') {
           chips = this.player2.chips;
@@ -279,9 +303,6 @@
           this.betStatus2=false;
           this.betStatus1=true;
           this.followStatus1=true;
-
-
-
         this.doStatus2 = true;
         this.checkStatusSendCard();
       },
