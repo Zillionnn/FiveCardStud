@@ -229,21 +229,24 @@ function Player() {
 
 }
 
+
+
+
 var player1 = new Player();
 player1.name = "Jack";
 player1.cards = [{cardset: "Heart", cardnum:10},
     {cardset: "Heart", cardnum: 'J'},
     {cardset: "d", cardnum: 9},
-    {cardset: "Spade", cardnum: 9},
+    {cardset: "Spade", cardnum: 8},
     {cardset: "Spade", cardnum: 3}];
 
 var player2 = new Player();
 player2.name = "Merry";
 player2.cards = [{cardset: "Club", cardnum: 10},
     {cardset: "Heart", cardnum: 7},
-    {cardset: "d", cardnum: 8},
+    {cardset: "d", cardnum: 9},
     {cardset: "Club", cardnum: 8},
-    {cardset: "Club", cardnum: 'A'}];
+    {cardset: "Spade", cardnum: 'J'}];
 
 
 
@@ -252,3 +255,4 @@ console.log(player1.cardsValue);
 
 player2.checkCardsType(player2.cards,player2);
 console.log(player2.cardsValue);
+

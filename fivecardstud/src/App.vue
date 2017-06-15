@@ -3,25 +3,33 @@
     <router-view></router-view>
 
     <button v-on:click="getAll()">重置所有牌</button>
+<!--
     <button v-on:click="getOne()" id="sendCard"> 发牌</button>
+-->
     <button v-on:click="checkValue()">check</button>
-    <p>WINNER:<span id="winner">{{winnerName}}</span></p>
-
+    <p>
+      {{totalBet}}
+    </p>
+    <p>WINNER:<span id="winner">{{winner.name}}</span></p>
 
     <br/>
-    <p>
 
-    </p>
     <div class="playerDesk">
-      <h3>{{player1.name}}</h3>
-      <button v-on:click="follow()" id="player1Bet" >Bet</button>
-      <button v-on:click="follow()" id="player1Follow" v-show="followStatus1">follow</button>
-      <button v-on:click="drop()">drop</button>
+      <h3>{{player1.name}}</h3><h4>{{player1.chips}}</h4>
+      <div class="buttons" v-show="betStatus1">
+        <button v-on:click="player1Bet(50)">$50</button>
+        <button v-on:click="player1Bet(100)">$100</button>
+        <button v-on:click="player1Bet(200)">$200</button>
+        <button v-on:click="player1Bet('max')">ALL IN</button>
+        <br/></div>
+        <button v-on:click="player1Follow()" id="player1Follow" v-show="followStatus1">follow</button>
+        <button v-on:click="drop()">drop</button>
+
+
       <p id="player1">
 
       <span v-for="( card ,i) in this.player1.cards">
-        <div v-bind:class="{hide: i==0}" style="float: left"></div>
-        <!--<img v-bind:src="card.cardSrc" v-bind:class="{small:i==0}">-->
+        <div v-bind:class="{hide: i==0 && x==false}" style="float: left"></div>
         <img v-bind:src="card.cardSrc" v-if="i>0 &&i<5 &&x==false ">
         <img v-bind:src="card.cardSrc" v-if="x ">
       </span>
@@ -32,10 +40,18 @@
     <br/>
 
     <div class="playerDesk">
-      <h4>{{player2.name}}</h4>
-      <button v-on:click="follow()" id="player2Bet"  >Bet</button>
-      <button v-on:click="follow()" id="player2Follow" v-show="followStatus2">follow</button>
-      <button v-on:click="drop()">drop</button>
+      <h3>{{player2.name}}</h3><h4>{{player2.chips}}</h4>
+      <div class="buttons" v-show="betStatus2">
+        <button v-on:click="player2Bet(50)">$50</button>
+        <button v-on:click="player2Bet(100)">$100</button>
+        <button v-on:click="player2Bet(200)">$200</button>
+        <button v-on:click="player2Bet('max')">ALL IN</button>
+      </div>
+        <br/>
+        <button v-on:click="player2Follow()" id="player2Follow" v-show="followStatus2">follow</button>
+        <button v-on:click="drop()">drop</button>
+
+
       <p id="player2">
 
       <span v-for="( card , i) in this.player2.cards">
@@ -62,20 +78,32 @@
         player1: {},
         player2: {},
         Card: {},
-        winnerName: '',
+        winner: {},
         x: false,
 
-        followStatus1:true,
-        followStatus2:true
+        doStatus1: false,
+        doStatus2: false,
+        betStatus1:true,
+        betStatus2:true,
+        followStatus1: false,
+        followStatus2: false,
+
+        player1CurrentBet: 0,
+        player2CurrentBet: 0,
+
+        totalBet: 0
       }
     },
 
     created(){
-      this.initPlayer()
+      this.initPlayer();
+
+    },
+    mounted(){
     },
     methods: {
       initPlayer: function () {
-        console.log(123);
+        console.log("init");
 
         this.player1 = new Player();
         this.player2 = new Player();
@@ -90,20 +118,32 @@
 
       /*初始化所有牌*/
       getAll: function () {
-        document.getElementById('sendCard').removeAttribute("disabled");
+        var VueObj = this;
+    //    document.getElementById('sendCard').removeAttribute("disabled");
         this.x = false;
+        this.player1CurrentBet=0;
+          this.player2CurrentBet=0;
 
-        this.followStatus1=true;
-          this.followStatus2=true;
         //所有牌的一个数组
         this.cardArray = this.Card.initAll();
-        this.winnerName="";
+
         this.player1.initCards();
         this.player2.initCards();
+        this.getOne();
+        this.getOne();
+
+        this.totalBet = 0;
+
+
       },
 
       /*给2个人发牌*/
       getOne: function () {
+        this.player1CurrentBet = 0;
+        this.player2CurrentBet = 0;
+        this.doStatus1 = false;
+        this.doStatus2 = false;
+
         var lastCard1 = this.cardArray.shift();
         this.player1.setCards(lastCard1);
         this.cardsetStringToNum(lastCard1);
@@ -118,39 +158,41 @@
         //判断牌面，决定谁能下注
         if (this.player1.cards.length >= 2) {
           if (lastCard1.cardnum > lastCard2.cardnum) {
-
-              this.followStatus1=false;
-
-            this.followStatus2=true;
+            this.betStatus1=true;
+            this.betStatus2=false;
 
           } else if (lastCard2.cardnum > lastCard1.cardnum) {
-            this.followStatus2=false;
-            this.followStatus1=true;
+            this.betStatus1=false;
+            this.betStatus2=true;
+
           } else {
             if (lastCard1.cardset > lastCard2.cardset) {
-              this.followStatus1=false;
-              this.followStatus2=true;
+              this.betStatus1=true;
+              this.betStatus2=false;
+
             } else {
-              this.followStatus2=false;
-              this.followStatus1=true;
+              this.betStatus1=false;
+              this.betStatus2=true;
 
             }
           }
         }
 
 
-        if (this.player1.cards.length == 5) {
+  /*      if (this.player1.cards.length == 5) {
           document.getElementById('sendCard').setAttribute("disabled", true);
-        }
+        }*/
 
       },
 
-      //比较牌的大小
+      //比较胜负
       checkValue: function () {
-        document.getElementById("player1").firstChild.firstChild.removeAttribute('class', 'hide');
+        //    document.getElementById("player1").firstChild.firstChild.removeAttribute('class', 'hide');
         this.x = true;
-        this.winnerName = Rule(this.player1, this.player2);
-        console.log(this.winnerName);
+        this.winner = Rule(this.player1, this.player2);
+
+        console.log(this.winner);
+        this.winner.chips += this.totalBet;
 
       },
 
@@ -186,8 +228,92 @@
           card.cardnum = 14;
         }
 
-      }
+      },
 
+      player1Bet: function (chips) {
+        if (chips > this.player2CurrentBet &&(this.player2CurrentBet!=0) ) {
+          this.player1CurrentBet=chips;
+
+          this.betStatus1=false;
+          this.betStatus2=false;
+          this.followStatus2 = true;
+          this.followStatus1 = false;
+
+          this.doStatus2=false;
+          return ;
+        }
+        if (chips == 'max') {
+          chips = this.player1.chips;
+        }
+          this.player1.chips -= chips;
+          this.player1CurrentBet = chips;
+          this.totalBet += chips;
+          this.betStatus1=false;
+          this.betStatus2=true;
+          this.followStatus2=true;
+
+
+        this.doStatus1 = true;
+
+        this.checkStatusSendCard();
+      },
+
+      player2Bet: function (chips) {
+        if (chips > this.player1CurrentBet &&( this.player1CurrentBet!=0)) {
+          this.player2CurrentBet=chips;
+
+          this.betStatus2=false;
+          this.betStatus1=false;
+          this.followStatus1 = true;
+          this.followStatus2 = false;
+
+         this.doStatus1=false;
+          return ;
+        }else       if (chips == 'max') {
+          chips = this.player2.chips;
+        }
+          this.player2.chips -= chips;
+          this.player2CurrentBet = chips;
+          this.totalBet += chips;
+
+          this.betStatus2=false;
+          this.betStatus1=true;
+          this.followStatus1=true;
+
+
+
+        this.doStatus2 = true;
+        this.checkStatusSendCard();
+      },
+
+      player1Follow: function () {
+        var followChips = this.player2CurrentBet-this.player1CurrentBet;
+        this.player1Bet(followChips);
+        this.followStatus1 = false;
+
+        this.doStatus1 = true;
+        this.checkStatusSendCard();
+      },
+
+      player2Follow: function () {
+        var followChips = this.player1CurrentBet-this.player2CurrentBet;
+        this.player2Bet(followChips);
+
+        this.followStatus2 = false;
+
+        this.doStatus2 = true;
+        this.checkStatusSendCard();
+      },
+
+      checkStatusSendCard: function () {
+        if (this.doStatus1 && this.doStatus2) {
+          if (this.player1.cards.length == 5) {
+            this.checkValue();
+          }else{
+            this.getOne();
+          }
+        }
+      },
 
     },
     components: {}
@@ -221,6 +347,7 @@
   .playerDesk {
     width: 100%;
     height: 210px;
-    margin-top: 3em;
+    margin-top: 5em;
+
   }
 </style>

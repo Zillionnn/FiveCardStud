@@ -83,6 +83,10 @@ var player1winnerSum=0;
 
     }
 
-
-
+    window.onload=function () {
+        document.addEventListener("click",doSome(),false);
+    };
+    function doSome(event) {
+        console.log(event);
+    }
 </script>

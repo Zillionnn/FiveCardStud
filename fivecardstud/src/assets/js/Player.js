@@ -9,7 +9,7 @@ export function Player() {
     this.cards = [];
 
     //手上的筹码,初始化设置合适的值
-    this.chips = 0;
+    this.chips =10000;
 
     this.cardsValue;
 
