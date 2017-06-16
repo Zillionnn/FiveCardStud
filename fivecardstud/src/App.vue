@@ -17,9 +17,10 @@
     <div class="playerDesk">
       <h3>{{player1.name}}</h3><h4>{{player1.chips}}</h4>
       <div class="buttons" v-show="betStatus1">
-        <button v-on:click="player1Bet(50)">$50</button>
-        <button v-on:click="player1Bet(100)">$100</button>
-        <button v-on:click="player1Bet(200)">$200</button>
+        <button v-on:click="player1Bet(500)">500</button>
+        <button v-on:click="player1Bet(1000)">1000</button>
+        <button v-on:click="player1Bet(2000)">2000</button>
+        <button v-on:click="player1Bet(5000)">5000</button>
         <button v-on:click="player1Bet('max')">ALL IN</button>
         <br/></div>
         <button v-on:click="player1Follow()" id="player1Follow" v-show="followStatus1">follow</button>
@@ -42,9 +43,11 @@
     <div class="playerDesk">
       <h3>{{player2.name}}</h3><h4>{{player2.chips}}</h4>
       <div class="buttons" v-show="betStatus2">
-        <button v-on:click="player2Bet(50)">$50</button>
-        <button v-on:click="player2Bet(100)">$100</button>
-        <button v-on:click="player2Bet(200)">$200</button>
+        <button v-on:click="player2Bet(500)">500</button>
+        <button v-on:click="player2Bet(1000)">1000</button>
+        <button v-on:click="player2Bet(2000)">2000</button>
+        <button v-on:click="player2Bet(5000)">5000</button>
+
         <button v-on:click="player2Bet('max')">ALL IN</button>
       </div>
         <br/>
@@ -118,9 +121,11 @@
 
       /*初始化所有牌*/
       getAll: function () {
-        var VueObj = this;
-    //    document.getElementById('sendCard').removeAttribute("disabled");
+        if(this.player1.chips!=0 && this.player2.chips!=0){
         this.x = false;
+
+
+
         this.player1CurrentBet=0;
           this.player2CurrentBet=0;
 
@@ -134,7 +139,10 @@
 
         this.totalBet = 0;
 
-
+        }
+        else{
+          alert("SOME ONE HAS NO  CHIPS");
+        }
       },
 
       /*给2个人发牌*/
@@ -249,9 +257,12 @@
       },
 
       player1Bet: function (chips) {
-        if (chips > this.player2CurrentBet &&(this.player2CurrentBet!=0) ) {
+        if(chips>this.player1.chips) {
+          chips = this.player1.chips;
+        }
+          if (chips > this.player2CurrentBet &&(this.player2CurrentBet!=0) ) {
           this.player1CurrentBet=chips;
-          this.player1.chips -= chips;
+          this.player1.setChips(this.player1.chips - chips);
           this.totalBet += chips;
 
           this.betStatus1=false;
@@ -266,45 +277,52 @@
         if (chips == 'max') {
           chips = this.player1.chips;
         }
-          this.player1.chips -= chips;
+          this.player1.setChips(this.player1.chips - chips);
           this.player1CurrentBet = chips;
           this.totalBet += chips;
           this.betStatus1=false;
           this.betStatus2=true;
-          this.followStatus2=true;
-
+        this.followStatus1=false;
+        this.followStatus2=true;
 
         this.doStatus1 = true;
-
         this.checkStatusSendCard();
+
       },
 
       player2Bet: function (chips) {
-        if (chips > this.player1CurrentBet &&( this.player1CurrentBet!=0)) {
-          this.player2.chips -= chips;
-          this.player2CurrentBet = chips;
-          this.totalBet += chips;
-
-          this.betStatus2=false;
-          this.betStatus1=false;
-          this.followStatus1 = true;
-          this.followStatus2 = false;
-
-         this.doStatus1=false;
-          this.doStatus2=true;
-          return ;
-        }else       if (chips == 'max') {
+        if(chips>this.player2.chips) {
           chips = this.player2.chips;
         }
-          this.player2.chips -= chips;
+
+          if (chips > this.player1CurrentBet && (this.player1CurrentBet != 0)) {
+            this.player2CurrentBet = chips;
+            this.player2.setChips(this.player2.chips - chips);
+            this.totalBet += chips;
+
+            this.betStatus2 = false;
+            this.betStatus1 = false;
+            this.followStatus1 = true;
+            this.followStatus2 = false;
+
+            this.doStatus1 = false;
+            this.doStatus2 = true;
+            return;
+          }
+          if (chips == 'max') {
+            chips = this.player2.chips;
+          }
+          this.player2.setChips(this.player2.chips - chips);
           this.player2CurrentBet = chips;
           this.totalBet += chips;
+          this.betStatus2 = false;
+          this.betStatus1 = true;
+          this.followStatus1 = true;
+          this.followStatus2 = true;
 
-          this.betStatus2=false;
-          this.betStatus1=true;
-          this.followStatus1=true;
-        this.doStatus2 = true;
-        this.checkStatusSendCard();
+          this.doStatus2 = true;
+          this.checkStatusSendCard();
+
       },
 
       player1Follow: function () {
@@ -312,8 +330,8 @@
         this.player1Bet(followChips);
         this.followStatus1 = false;
 
-        this.doStatus1 = true;
         this.checkStatusSendCard();
+
       },
 
       player2Follow: function () {
@@ -321,13 +339,14 @@
         this.player2Bet(followChips);
 
         this.followStatus2 = false;
-
-        this.doStatus2 = true;
         this.checkStatusSendCard();
       },
 
       checkStatusSendCard: function () {
-        if (this.doStatus1 && this.doStatus2) {
+        if (this.doStatus1==true && this.doStatus2==true) {
+          this.player1CurrentBet=0;
+          this.player2CurrentBet=0;
+
           if (this.player1.cards.length == 5) {
             this.checkValue();
           }else{

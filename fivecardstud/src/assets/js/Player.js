@@ -25,7 +25,10 @@ export function Player() {
     };
 
     this.setChips = function (chips) {
-        this.chips += chips;
+      this.chips = chips;
+      if(this.chips<0){
+        this.chips=0;
+      }
     };
 
     this.getChips = function () {
