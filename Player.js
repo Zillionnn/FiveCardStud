@@ -9,7 +9,7 @@ function Player() {
     this.cards = [];
 
     //手上的筹码,初始化设置合适的值
-    this.chips = 0;
+    this.chips = 10000;
 
     this.cardsValue;
 
@@ -256,3 +256,32 @@ console.log(player1.cardsValue);
 player2.checkCardsType(player2.cards,player2);
 console.log(player2.cardsValue);
 
+
+/**
+ * ======================继承Player()=======
+ * @constructor
+ */
+function Auto() {
+
+    this.cards = [];
+    this.oppoCards = [];
+    this.P = 0;
+
+    this.computeOwnWinnerP=function () {
+        for(var i=0;i<this.cards.length;i++){
+
+        }
+    };
+    this.getOpponet = function (player) {
+        for (var i = 1; i < player.cards.length; i++) {
+            this.oppoCards.push(player.cards[i]);
+        }
+
+    }
+
+
+}
+
+
+var autoPlayer=new Auto();
+console.log(autoPlayer.getChips());

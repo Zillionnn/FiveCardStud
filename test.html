@@ -24,14 +24,16 @@
 <script>
     var cardArray = [];
     var lastCardPosition;
-    var player1 = new Player();
-    player1.name = "Jack";
+    var autoPlayer=new Auto();
+
+    var s=autoPlayer.getChips();
+    console.log(s);
     var player2 = new Player();
     player2.name = "Merry";
 var player1winnerSum=0;
     var player2winnerSum=0;
 
-
+Auto.computeOwnWinnerP();
     /*初始化所有牌*/
     function getAll() {
         document.getElementById("player1").innerHTML = "";
@@ -83,10 +85,5 @@ var player1winnerSum=0;
 
     }
 
-    window.onload=function () {
-        document.addEventListener("click",doSome(),false);
-    };
-    function doSome(event) {
-        console.log(event);
-    }
+
 </script>

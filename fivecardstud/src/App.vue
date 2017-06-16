@@ -24,7 +24,7 @@
         <button v-on:click="player1Bet('max')">ALL IN</button>
         <br/></div>
         <button v-on:click="player1Follow()" id="player1Follow" v-show="followStatus1">follow</button>
-        <button v-on:click="drop()">drop</button>
+        <button v-on:click="drop(1)">drop</button>
 
 
       <p id="player1">
@@ -52,7 +52,7 @@
       </div>
         <br/>
         <button v-on:click="player2Follow()" id="player2Follow" v-show="followStatus2">follow</button>
-        <button v-on:click="drop()">drop</button>
+        <button v-on:click="drop(2)">drop</button>
 
 
       <p id="player2">
@@ -72,6 +72,7 @@
   import {Card} from './assets/js/Card.js';
   import {Player} from './assets/js/Player.js';
   import {Rule} from './assets/js/Rule.js';
+import {Auto} from './assets/js/Auto';
 
   export default {
     data(){
@@ -100,7 +101,8 @@
 
     created(){
       this.initPlayer();
-
+      Auto.prototype=new Player();
+      console.log(Auto.getChips());
     },
     mounted(){
     },
@@ -125,9 +127,9 @@
         this.x = false;
 
 
-
         this.player1CurrentBet=0;
           this.player2CurrentBet=0;
+
 
         //所有牌的一个数组
         this.cardArray = this.Card.initAll();
@@ -138,6 +140,9 @@
         this.getOne();
 
         this.totalBet = 0;
+        this.player1.chips-=500;
+          this.player2.chips-=500;
+          this.totalBet+=1000;
 
         }
         else{
@@ -156,7 +161,6 @@
         this.player1.setCards(lastCard1);
         this.cardsetStringToNum(lastCard1);
         this.stringToNum(lastCard1);
-
 
         var lastCard2 = this.cardArray.shift();
         this.player2.setCards(lastCard2);
@@ -202,7 +206,9 @@
   /*      if (this.player1.cards.length == 5) {
           document.getElementById('sendCard').setAttribute("disabled", true);
         }*/
-
+   /*     if(this.player1.chips==0 || this.player2.chips==0){
+          this.getOne();
+      }*/
       },
 
       //比较胜负
@@ -353,6 +359,21 @@
             this.getOne();
           }
         }
+      },
+
+      drop:function (i) {
+        if(i==1){
+          this.player2.chips+=this.totalBet;
+          this.winner=this.player2;
+        }
+        if(i==2){
+          this.player1.chips+=this.totalBet;
+          this.winner=this.player1;
+        }
+
+        alert(this.winner.name+"WIN");
+        this.getAll();
+
       },
 
     },
