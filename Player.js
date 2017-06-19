@@ -244,9 +244,7 @@ var player2 = new Player();
 player2.name = "Merry";
 player2.cards = [{cardset: "Club", cardnum: 10},
     {cardset: "Heart", cardnum: 7},
-    {cardset: "d", cardnum: 9},
-    {cardset: "Club", cardnum: 8},
-    {cardset: "Spade", cardnum: 'J'}];
+    {cardset: "d", cardnum: 7}];
 
 
 
@@ -282,6 +280,6 @@ function Auto() {
 
 }
 
-
+Auto.prototype=new Player();
 var autoPlayer=new Auto();
 console.log(autoPlayer.getChips());

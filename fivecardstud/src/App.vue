@@ -3,6 +3,7 @@
     <router-view></router-view>
 
     <button v-on:click="getAll()">重置所有牌</button>
+    <button v-on:click="getP()">getP</button>
 <!--
     <button v-on:click="getOne()" id="sendCard"> 发牌</button>
 -->
@@ -24,7 +25,7 @@
         <button v-on:click="player1Bet('max')">ALL IN</button>
         <br/></div>
         <button v-on:click="player1Follow()" id="player1Follow" v-show="followStatus1">follow</button>
-        <button v-on:click="drop(1)">drop</button>
+        <button v-on:click="drop(1)" v-show="betStatus1">drop</button>
 
 
       <p id="player1">
@@ -52,7 +53,7 @@
       </div>
         <br/>
         <button v-on:click="player2Follow()" id="player2Follow" v-show="followStatus2">follow</button>
-        <button v-on:click="drop(2)">drop</button>
+        <button v-on:click="drop(2)" v-show="betStatus2">drop</button>
 
 
       <p id="player2">
@@ -73,6 +74,7 @@
   import {Player} from './assets/js/Player.js';
   import {Rule} from './assets/js/Rule.js';
 import {Auto} from './assets/js/Auto';
+
 
   export default {
     data(){
@@ -100,9 +102,13 @@ import {Auto} from './assets/js/Auto';
     },
 
     created(){
-      this.initPlayer();
+      /**
+       *   ===========机器人继承player=============
+       */
       Auto.prototype=new Player();
-      console.log(Auto.getChips());
+
+      this.initPlayer();
+
     },
     mounted(){
     },
@@ -110,10 +116,10 @@ import {Auto} from './assets/js/Auto';
       initPlayer: function () {
         console.log("init");
 
-        this.player1 = new Player();
+        this.player1 = new Auto();
         this.player2 = new Player();
 
-        this.player1.name = "Jack";
+        this.player1.name = "Robot";
         this.player2.name = "Merry";
 
         this.Card = new Card();
@@ -374,6 +380,11 @@ import {Auto} from './assets/js/Auto';
         alert(this.winner.name+"WIN");
         this.getAll();
 
+      },
+
+      getP:function () {
+        this.player1.getOpponet(this.player2);
+        console.log(this.player1.computeOwnWinnerP());
       },
 
     },
